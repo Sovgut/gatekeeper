@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Sovgut/npm-gatekeeper.git"
+    "url": "git+https://github.com/Sovgut/gatekeeper.git"
   },
   "keywords": [
     "validation",
