@@ -93,6 +93,46 @@ const throwAnException = (scheme: Field, initialMessage: string, key: string, va
   throw new Error(initialMessage);
 }
 
+const validatePrimitive = (scheme: Field, value: any, key: string) => {
+  if (scheme.type === Type.Number) {
+    let parsedValue = NaN;
+
+    if (scheme?.format === Format.Float) {
+      parsedValue = parseFloat(value);
+    } else if (scheme?.format === Format.Integer) {
+      parsedValue = parseFloat(value);
+
+      if (parsedValue.toString().includes('.')) {
+        throwAnException(scheme, `"${key}" isn't an integer; received: ${value};`, key, value, Reason.Type);
+      }
+    } else {
+      parsedValue = parseFloat(value);
+    }
+
+    if (isNaN(parsedValue)) {
+      throwAnException(scheme, `"${key}" isn't an number; received: ${value};`, key, value, Reason.Type);
+    }
+  }
+
+  if (scheme.type === Type.Boolean) {
+    const parsedValue = value === 'true' || value === 'false';
+
+    if (!parsedValue) {
+      throwAnException(scheme, `"${key}" isn't an boolean; received: ${value};`, key, value, Reason.Type);
+    }
+  }
+
+  if (scheme.type === Type.String) {
+    if (scheme?.format === Format.DateTime) {
+      const parsedValue = Date.parse(value);
+
+      if (isNaN(parsedValue)) {
+        throwAnException(scheme, `"${key}" isn't an date; received: ${value};`, key, value, Reason.Type);
+      }
+    }
+  }
+}
+
 export const validate = (target: any, scheme: Scheme) => {
   for (const key in scheme) {
     const schemeValue = scheme[key];
@@ -116,8 +156,10 @@ export const validate = (target: any, scheme: Scheme) => {
       }
 
       for (const item of targetValue) {
+        validatePrimitive(schemeValue.items!, item, key);
+        
         if (schemeValue.items!.onValidate && !schemeValue.items!.onValidate(item)) {
-          throwAnException(schemeValue, `"${key}" had invalid value; received: ${targetValue};`, key, targetValue, Reason.OnValidate);
+          throwAnException(schemeValue, `"${key}" had invalid value; received: ${item};`, key, targetValue, Reason.OnValidate);
         }
       }
     }
@@ -130,42 +172,6 @@ export const validate = (target: any, scheme: Scheme) => {
       validate(targetValue, schemeValue.properties as Scheme);
     }
 
-    if (schemeValue.type === Type.Number) {
-      let value = NaN;
-
-      if (schemeValue?.format === Format.Float) {
-        value = parseFloat(targetValue);
-      } else if (schemeValue?.format === Format.Integer) {
-        value = parseFloat(targetValue);
-
-        if (value.toString().includes('.')) {
-          throwAnException(schemeValue, `"${key}" isn't an integer; received: ${value};`, key, targetValue, Reason.Type);
-        }
-      } else {
-        value = parseFloat(targetValue);
-      }
-
-      if (isNaN(value)) {
-        throwAnException(schemeValue, `"${key}" isn't an number; received: ${value};`, key, targetValue, Reason.Type);
-      }
-    }
-
-    if (schemeValue.type === Type.Boolean) {
-      const value = targetValue === 'true' || targetValue === 'false';
-
-      if (!value) {
-        throwAnException(schemeValue, `"${key}" isn't an boolean; received: ${value};`, key, targetValue, Reason.Type);
-      }
-    }
-
-    if (schemeValue.type === Type.String) {
-      if (schemeValue?.format === Format.DateTime) {
-        const value = Date.parse(targetValue);
-
-        if (isNaN(value)) {
-          throwAnException(schemeValue, `"${key}" isn't an date; received: ${value};`, key, targetValue, Reason.Type);
-        }
-      }
-    }
+    validatePrimitive(schemeValue, targetValue, key);
   }
 };

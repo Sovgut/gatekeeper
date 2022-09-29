@@ -1,6 +1,6 @@
 {
   "name": "@sovgut/gatekeeper",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Validation system using schemes in Swagger design",
   "main": "index.js",
   "repository": {

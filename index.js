@@ -30,6 +30,40 @@ const throwAnException = (scheme, initialMessage, key, value, reason) => {
     }
     throw new Error(initialMessage);
 };
+const validatePrimitive = (scheme, value, key) => {
+    if (scheme.type === Type.Number) {
+        let parsedValue = NaN;
+        if ((scheme === null || scheme === void 0 ? void 0 : scheme.format) === Format.Float) {
+            parsedValue = parseFloat(value);
+        }
+        else if ((scheme === null || scheme === void 0 ? void 0 : scheme.format) === Format.Integer) {
+            parsedValue = parseFloat(value);
+            if (parsedValue.toString().includes('.')) {
+                throwAnException(scheme, `"${key}" isn't an integer; received: ${value};`, key, value, Reason.Type);
+            }
+        }
+        else {
+            parsedValue = parseFloat(value);
+        }
+        if (isNaN(parsedValue)) {
+            throwAnException(scheme, `"${key}" isn't an number; received: ${value};`, key, value, Reason.Type);
+        }
+    }
+    if (scheme.type === Type.Boolean) {
+        const parsedValue = value === 'true' || value === 'false';
+        if (!parsedValue) {
+            throwAnException(scheme, `"${key}" isn't an boolean; received: ${value};`, key, value, Reason.Type);
+        }
+    }
+    if (scheme.type === Type.String) {
+        if ((scheme === null || scheme === void 0 ? void 0 : scheme.format) === Format.DateTime) {
+            const parsedValue = Date.parse(value);
+            if (isNaN(parsedValue)) {
+                throwAnException(scheme, `"${key}" isn't an date; received: ${value};`, key, value, Reason.Type);
+            }
+        }
+    }
+};
 const validate = (target, scheme) => {
     for (const key in scheme) {
         const schemeValue = scheme[key];
@@ -49,8 +83,9 @@ const validate = (target, scheme) => {
                 throwAnException(schemeValue, `"${key}" isn't an array or array is empty; received: ${targetValue};`, key, targetValue, Reason.Required);
             }
             for (const item of targetValue) {
+                validatePrimitive(schemeValue.items, item, key);
                 if (schemeValue.items.onValidate && !schemeValue.items.onValidate(item)) {
-                    throwAnException(schemeValue, `"${key}" had invalid value; received: ${targetValue};`, key, targetValue, Reason.OnValidate);
+                    throwAnException(schemeValue, `"${key}" had invalid value; received: ${item};`, key, targetValue, Reason.OnValidate);
                 }
             }
         }
@@ -60,38 +95,7 @@ const validate = (target, scheme) => {
             }
             (0, exports.validate)(targetValue, schemeValue.properties);
         }
-        if (schemeValue.type === Type.Number) {
-            let value = NaN;
-            if ((schemeValue === null || schemeValue === void 0 ? void 0 : schemeValue.format) === Format.Float) {
-                value = parseFloat(targetValue);
-            }
-            else if ((schemeValue === null || schemeValue === void 0 ? void 0 : schemeValue.format) === Format.Integer) {
-                value = parseFloat(targetValue);
-                if (value.toString().includes('.')) {
-                    throwAnException(schemeValue, `"${key}" isn't an integer; received: ${value};`, key, targetValue, Reason.Type);
-                }
-            }
-            else {
-                value = parseFloat(targetValue);
-            }
-            if (isNaN(value)) {
-                throwAnException(schemeValue, `"${key}" isn't an number; received: ${value};`, key, targetValue, Reason.Type);
-            }
-        }
-        if (schemeValue.type === Type.Boolean) {
-            const value = targetValue === 'true' || targetValue === 'false';
-            if (!value) {
-                throwAnException(schemeValue, `"${key}" isn't an boolean; received: ${value};`, key, targetValue, Reason.Type);
-            }
-        }
-        if (schemeValue.type === Type.String) {
-            if ((schemeValue === null || schemeValue === void 0 ? void 0 : schemeValue.format) === Format.DateTime) {
-                const value = Date.parse(targetValue);
-                if (isNaN(value)) {
-                    throwAnException(schemeValue, `"${key}" isn't an date; received: ${value};`, key, targetValue, Reason.Type);
-                }
-            }
-        }
+        validatePrimitive(schemeValue, targetValue, key);
     }
 };
 exports.validate = validate;
