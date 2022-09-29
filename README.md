@@ -14,7 +14,6 @@ import HttpStatus from '~core/http-status';
 
 const scheme: Scheme = {
   query: {
-    required: false,
     type: Type.Object,
     properties: {
       limit: {
@@ -34,24 +33,19 @@ const scheme: Scheme = {
         onValidate: (value) => value > 10
       },
       offset: {
-        required: false,
         type: Type.Number,
       },
       filter: {
         type: Type.Object,
-        required: false,
         properties: {
           createdAtRange: {
             type: Type.Array,
-            required: false,
             items: {
-              required: false,
               type: Type.String,
               format: Format.DateTime
             },
           },
           id: {
-            required: false,
             type: Type.String,
             onValidate: mongoose.isObjectIdOrHexString,
           },
@@ -108,11 +102,11 @@ interface Field {
   type: Type;
 
   /**
-   * Package can skip this field if value is undefined and `required` property is false.
+   * Package can skip this field if value is undefined and `optional` property is true.
    * In other way is exception is raised.
    * default: `true`
    */
-  required?: boolean;
+  optional?: boolean;
 
   /**
    * Package can validate value by provided type with format.

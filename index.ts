@@ -22,7 +22,7 @@ interface Field {
   /**
    * Package can skip this field if value is undefined and `required` property is false.
    * In other way is exception is raised.
-   * default: `true`
+   * default: `false`
    */
   required?: boolean;
 
