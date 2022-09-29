@@ -24,7 +24,7 @@ interface Field {
    * In other way is exception is raised.
    * default: `true`
    */
-  required: boolean;
+  required?: boolean;
 
   /**
    * Package is validate value types with field type,

@@ -101,18 +101,18 @@ enum Reason {
 
 interface Field {
   /**
-   * Package can skip this field if value is undefined and `required` property is false.
-   * In other way is exception is raised.
-   * default: `true`
-   */
-  required: boolean;
-
-  /**
    * Package is validate value types with field type,
    * this property is represent which type is required for current field.
    * default: `Type.String`
    */
   type: Type;
+
+  /**
+   * Package can skip this field if value is undefined and `required` property is false.
+   * In other way is exception is raised.
+   * default: `true`
+   */
+  required?: boolean;
 
   /**
    * Package can validate value by provided type with format.
