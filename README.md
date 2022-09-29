@@ -95,18 +95,18 @@ enum Reason {
 
 interface Field {
   /**
+   * Package can skip this field if value is undefined and `required` property is false.
+   * In other way is exception is raised.
+   * default: `false`
+   */
+  required?: boolean;
+
+  /**
    * Package is validate value types with field type,
    * this property is represent which type is required for current field.
    * default: `Type.String`
    */
   type: Type;
-
-  /**
-   * Package can skip this field if value is undefined and `optional` property is true.
-   * In other way is exception is raised.
-   * default: `true`
-   */
-  optional?: boolean;
 
   /**
    * Package can validate value by provided type with format.
@@ -150,5 +150,9 @@ interface Field {
    * Used only when `Type.Array` type is provided.
    */
   items?: Field;
+}
+
+export interface Scheme {
+  [property: string]: Field;
 }
 ```
