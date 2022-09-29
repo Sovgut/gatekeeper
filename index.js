@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validate = exports.Reason = exports.Type = void 0;
+exports.validate = exports.Reason = exports.Format = exports.Type = void 0;
 var Type;
 (function (Type) {
     Type["Object"] = "object";
@@ -9,6 +9,12 @@ var Type;
     Type["String"] = "string";
     Type["Array"] = "array";
 })(Type = exports.Type || (exports.Type = {}));
+var Format;
+(function (Format) {
+    Format["Float"] = "float";
+    Format["Integer"] = "integer";
+    Format["DateTime"] = "date-time";
+})(Format = exports.Format || (exports.Format = {}));
 var Reason;
 (function (Reason) {
     Reason["Required"] = "required";
@@ -49,23 +55,31 @@ const validate = (target, scheme) => {
             }
         }
         if (schemeValue.type === Type.Object) {
-            for (const _ in schemeValue.properties) {
-                (0, exports.validate)(targetValue, schemeValue.properties);
-            }
+            (0, exports.validate)(targetValue, schemeValue.properties);
         }
         if (schemeValue.type === Type.Number) {
-            if (typeof targetValue !== 'undefined') {
-                const value = parseInt(targetValue, 10);
-                if (isNaN(value)) {
-                    throwAnException(schemeValue, `"${key}" isn't an number; received: ${targetValue};`, key, targetValue, Reason.Type);
-                }
+            let value = NaN;
+            if ((schemeValue === null || schemeValue === void 0 ? void 0 : schemeValue.format) === Format.Float) {
+                value = parseFloat(targetValue);
+            }
+            else {
+                value = parseInt(targetValue, 10);
+            }
+            if (isNaN(value)) {
+                throwAnException(schemeValue, `"${key}" isn't an number; received: ${value};`, key, targetValue, Reason.Type);
             }
         }
         if (schemeValue.type === Type.Boolean) {
-            if (typeof targetValue !== 'undefined') {
-                const value = targetValue === 'true' || targetValue === 'false';
-                if (!value) {
-                    throwAnException(schemeValue, `"${key}" isn't an boolean; received: ${targetValue};`, key, targetValue, Reason.Type);
+            const value = targetValue === 'true' || targetValue === 'false';
+            if (!value) {
+                throwAnException(schemeValue, `"${key}" isn't an boolean; received: ${value};`, key, targetValue, Reason.Type);
+            }
+        }
+        if (schemeValue.type === Type.String) {
+            if ((schemeValue === null || schemeValue === void 0 ? void 0 : schemeValue.format) === Format.DateTime) {
+                const value = Date.parse(targetValue);
+                if (isNaN(value)) {
+                    throwAnException(schemeValue, `"${key}" isn't an date; received: ${value};`, key, targetValue, Reason.Type);
                 }
             }
         }

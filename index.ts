@@ -6,6 +6,12 @@ export enum Type {
   Array = 'array'
 }
 
+export enum Format {
+  Float = 'float',
+  Integer = 'integer',
+  DateTime = 'date-time'
+}
+
 export enum Reason {
   Required = 'required',
   Type = 'type',
@@ -26,6 +32,12 @@ interface Field {
    * default: `Type.String`
    */
   type: Type;
+
+  /**
+   * Package can validate value by provided type with format.
+   * As example type `Type.String` with format `Format.DateTime` is tested as date.
+   */
+  format?: Format
 
   /**
    * Overflow default class exception.
@@ -111,27 +123,37 @@ export const validate = (target: any, scheme: Scheme) => {
     }
 
     if (schemeValue.type === Type.Object) {
-      for (const _ in schemeValue.properties) {
-        validate(targetValue, schemeValue.properties);
-      }
+      validate(targetValue, schemeValue.properties as Scheme);
     }
 
     if (schemeValue.type === Type.Number) {
-      if (typeof targetValue !== 'undefined') {
-        const value = parseInt(targetValue, 10);
+      let value = NaN;
 
-        if (isNaN(value)) {
-          throwAnException(schemeValue, `"${key}" isn't an number; received: ${targetValue};`, key, targetValue, Reason.Type);
-        }
+      if (schemeValue?.format === Format.Float) {
+        value = parseFloat(targetValue);
+      } else {
+        value = parseInt(targetValue, 10);
+      }
+
+      if (isNaN(value)) {
+        throwAnException(schemeValue, `"${key}" isn't an number; received: ${value};`, key, targetValue, Reason.Type);
       }
     }
 
     if (schemeValue.type === Type.Boolean) {
-      if (typeof targetValue !== 'undefined') {
-        const value = targetValue === 'true' || targetValue === 'false';
+      const value = targetValue === 'true' || targetValue === 'false';
 
-        if (!value) {
-          throwAnException(schemeValue, `"${key}" isn't an boolean; received: ${targetValue};`, key, targetValue, Reason.Type);
+      if (!value) {
+        throwAnException(schemeValue, `"${key}" isn't an boolean; received: ${value};`, key, targetValue, Reason.Type);
+      }
+    }
+
+    if (schemeValue.type === Type.String) {
+      if (schemeValue?.format === Format.DateTime) {
+        const value = Date.parse(targetValue);
+
+        if (isNaN(value)) {
+          throwAnException(schemeValue, `"${key}" isn't an date; received: ${value};`, key, targetValue, Reason.Type);
         }
       }
     }

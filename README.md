@@ -5,8 +5,7 @@ This package is builded for validate data for any objects using schemes like in 
 ## Example usage
 
 ```typescript
-import type { Scheme, Type } from '@sovgut/gatekeeper';
-import { validate } from '@sovgut/gatekeeper';
+import { validate, Scheme, Type, Format } from '@sovgut/gatekeeper';
 
 // MODULES FROM API, THIS IS NOT RELATED TO PACKAGE
 import { Router } from 'express';
@@ -48,6 +47,7 @@ const scheme: Scheme = {
             items: {
               required: false,
               type: Type.String,
+              format: Format.DateTime
             },
           },
           id: {
@@ -87,6 +87,12 @@ enum Type {
   Array = 'array'
 }
 
+enum Format {
+  Float = 'float',
+  Integer = 'integer',
+  DateTime = 'date-time'
+}
+
 enum Reason {
   Required = 'required',
   Type = 'type',
@@ -109,6 +115,12 @@ interface Field {
   type: Type;
 
   /**
+   * Package can validate value by provided type with format.
+   * As example type `Type.String` with format `Format.DateTime` is tested as date.
+   */
+  format?: Format
+
+  /**
    * Overflow default class exception.
    */
   exception?: {
@@ -119,7 +131,7 @@ interface Field {
     constructor: any;
 
     /**
-     * Pass parameters to a custom exception after message.
+     * Pass arguments to a custom exception after message.
      * Used only when `exception` property is provided.
      */
     parameters?: (string | number | boolean)[];
@@ -144,9 +156,5 @@ interface Field {
    * Used only when `Type.Array` type is provided.
    */
   items?: Field;
-}
-
-export interface Scheme {
-  [property: string]: Field;
 }
 ```
