@@ -135,8 +135,14 @@ export const validate = (target: any, scheme: Scheme) => {
 
       if (schemeValue?.format === Format.Float) {
         value = parseFloat(targetValue);
+      } else if (schemeValue?.format === Format.Integer) {
+        value = parseFloat(targetValue);
+
+        if (value.toString().includes('.')) {
+          throwAnException(schemeValue, `"${key}" isn't an integer; received: ${value};`, key, targetValue, Reason.Type);
+        }
       } else {
-        value = parseInt(targetValue, 10);
+        value = parseFloat(targetValue);
       }
 
       if (isNaN(value)) {

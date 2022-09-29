@@ -65,8 +65,14 @@ const validate = (target, scheme) => {
             if ((schemeValue === null || schemeValue === void 0 ? void 0 : schemeValue.format) === Format.Float) {
                 value = parseFloat(targetValue);
             }
+            else if ((schemeValue === null || schemeValue === void 0 ? void 0 : schemeValue.format) === Format.Integer) {
+                value = parseFloat(targetValue);
+                if (value.toString().includes('.')) {
+                    throwAnException(schemeValue, `"${key}" isn't an integer; received: ${value};`, key, targetValue, Reason.Type);
+                }
+            }
             else {
-                value = parseInt(targetValue, 10);
+                value = parseFloat(targetValue);
             }
             if (isNaN(value)) {
                 throwAnException(schemeValue, `"${key}" isn't an number; received: ${value};`, key, targetValue, Reason.Type);
