@@ -123,6 +123,10 @@ export const validate = (target: any, scheme: Scheme) => {
     }
 
     if (schemeValue.type === Type.Object) {
+      if (typeof targetValue !== 'object') {
+        throwAnException(schemeValue, `"${key}" isn't an object; received: ${targetValue};`, key, targetValue, Reason.Type);
+      }
+
       validate(targetValue, schemeValue.properties as Scheme);
     }
 
