@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const __1 = require("../");
 const constants_1 = require("../constants");
 const types_1 = require("../types");
-exports.default = (value, field, exceptionInstance) => {
+const processObject = (value, field, exceptionInstance) => {
     var _a;
     if (typeof value !== 'object' || Array.isArray(value)) {
         exceptionInstance.throw(constants_1.Message.NotObject, types_1.Reason.Type);
@@ -18,3 +18,4 @@ exports.default = (value, field, exceptionInstance) => {
     }
     (0, __1.validate)(value, field.properties);
 };
+exports.default = processObject;

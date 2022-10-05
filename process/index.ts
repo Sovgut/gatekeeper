@@ -5,7 +5,7 @@ import processEnum from './enum';
 import processNumber from './number';
 import processString from './string';
 
-export default (key: string, value: any, field: Field) => {
+const processValidation = (key: string, value: any, field: Field) => {
   const exceptionInstance = new Exception(field, key, value);
 
   if (field.type === Type.Number) {
@@ -24,3 +24,5 @@ export default (key: string, value: any, field: Field) => {
     processEnum(value, field, exceptionInstance);
   }
 };
+
+export default processValidation;

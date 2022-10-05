@@ -7,7 +7,7 @@ const _1 = __importDefault(require("."));
 const constants_1 = require("../constants");
 const types_1 = require("../types");
 const object_1 = __importDefault(require("./object"));
-exports.default = (key, value, field, exceptionInstance) => {
+const processArray = (key, value, field, exceptionInstance) => {
     var _a;
     if (!field.items)
         return;
@@ -21,7 +21,10 @@ exports.default = (key, value, field, exceptionInstance) => {
         field.items.exception = field.exception;
     }
     for (const item of value) {
-        if (field.items.type === types_1.Type.Object) {
+        if (field.items.type === types_1.Type.Array) {
+            processArray(key, item, field.items, exceptionInstance);
+        }
+        else if (field.items.type === types_1.Type.Object) {
             (0, object_1.default)(item, field.items, exceptionInstance);
         }
         else {
@@ -32,3 +35,4 @@ exports.default = (key, value, field, exceptionInstance) => {
         }
     }
 };
+exports.default = processArray;

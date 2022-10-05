@@ -2,7 +2,11 @@ import { Message } from '../constants';
 import { Exception } from '../exception';
 import { Field, Format, Reason } from '../types';
 
-export default (value: any, field: Field, exceptionInstance: Exception) => {
+const processString = (
+  value: any,
+  field: Field,
+  exceptionInstance: Exception,
+) => {
   if (typeof value !== 'string') {
     exceptionInstance.throw(Message.NotString, Reason.Type);
   }
@@ -29,3 +33,5 @@ export default (value: any, field: Field, exceptionInstance: Exception) => {
     exceptionInstance.throw(Message.NotInRange, Reason.Range);
   }
 };
+
+export default processString;

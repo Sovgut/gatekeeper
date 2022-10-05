@@ -2,7 +2,11 @@ import { Message } from '../constants';
 import { Exception } from '../exception';
 import { Field, Format, Reason } from '../types';
 
-export default (value: any, field: Field, exceptionInstance: Exception) => {
+const processNumber = (
+  value: any,
+  field: Field,
+  exceptionInstance: Exception,
+) => {
   let parsedValue = NaN;
 
   if (field?.format === Format.Float) {
@@ -21,3 +25,5 @@ export default (value: any, field: Field, exceptionInstance: Exception) => {
     exceptionInstance.throw(Message.NotNumber, Reason.Type);
   }
 };
+
+export default processNumber;

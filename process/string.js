@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
 const types_1 = require("../types");
-exports.default = (value, field, exceptionInstance) => {
+const processString = (value, field, exceptionInstance) => {
     if (typeof value !== 'string') {
         exceptionInstance.throw(constants_1.Message.NotString, types_1.Reason.Type);
     }
@@ -24,3 +24,4 @@ exports.default = (value, field, exceptionInstance) => {
         exceptionInstance.throw(constants_1.Message.NotInRange, types_1.Reason.Range);
     }
 };
+exports.default = processString;

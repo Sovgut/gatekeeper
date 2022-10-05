@@ -3,7 +3,11 @@ import { Message } from '../constants';
 import { Exception } from '../exception';
 import { Field, Reason, Scheme } from '../types';
 
-export default (value: any, field: Field, exceptionInstance: Exception) => {
+const processObject = (
+  value: any,
+  field: Field,
+  exceptionInstance: Exception,
+) => {
   if (typeof value !== 'object' || Array.isArray(value)) {
     exceptionInstance.throw(Message.NotObject, Reason.Type);
   }
@@ -19,3 +23,5 @@ export default (value: any, field: Field, exceptionInstance: Exception) => {
 
   validate(value, field.properties as Scheme);
 };
+
+export default processObject;

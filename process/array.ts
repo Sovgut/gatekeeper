@@ -4,7 +4,7 @@ import { Exception } from '../exception';
 import { Field, Reason, Type } from '../types';
 import processObject from './object';
 
-export default (
+const processArray = (
   key: string,
   value: any,
   field: Field,
@@ -23,7 +23,9 @@ export default (
   }
 
   for (const item of value) {
-    if (field.items.type === Type.Object) {
+    if (field.items.type === Type.Array) {
+      processArray(key, item, field.items, exceptionInstance);
+    } else if (field.items.type === Type.Object) {
       processObject(item, field.items, exceptionInstance);
     } else {
       processValidation(key, item, field.items);
@@ -34,3 +36,5 @@ export default (
     }
   }
 };
+
+export default processArray;

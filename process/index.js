@@ -9,7 +9,7 @@ const boolean_1 = __importDefault(require("./boolean"));
 const enum_1 = __importDefault(require("./enum"));
 const number_1 = __importDefault(require("./number"));
 const string_1 = __importDefault(require("./string"));
-exports.default = (key, value, field) => {
+const processValidation = (key, value, field) => {
     const exceptionInstance = new exception_1.Exception(field, key, value);
     if (field.type === types_1.Type.Number) {
         (0, number_1.default)(value, field, exceptionInstance);
@@ -24,3 +24,4 @@ exports.default = (key, value, field) => {
         (0, enum_1.default)(value, field, exceptionInstance);
     }
 };
+exports.default = processValidation;

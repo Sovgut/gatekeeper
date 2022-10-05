@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
 const types_1 = require("../types");
-exports.default = (value, field, exceptionInstance) => {
+const processNumber = (value, field, exceptionInstance) => {
     let parsedValue = NaN;
     if ((field === null || field === void 0 ? void 0 : field.format) === types_1.Format.Float) {
         parsedValue = parseFloat(value);
@@ -20,3 +20,4 @@ exports.default = (value, field, exceptionInstance) => {
         exceptionInstance.throw(constants_1.Message.NotNumber, types_1.Reason.Type);
     }
 };
+exports.default = processNumber;
