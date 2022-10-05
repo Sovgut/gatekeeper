@@ -92,6 +92,7 @@ enum Reason {
   Type = 'type',
   OnValidate = 'onValidate',
   Enum = 'enum',
+  Range = 'range'
 }
 
 interface Field {
@@ -153,7 +154,7 @@ interface Field {
     constructor: any;
 
     /**
-     * Is should current exceptions options is passed through to all children's in scheme.
+     * Is should current exception options is passed through to all children's in scheme.
      * 
      * Default: `false`.
      */

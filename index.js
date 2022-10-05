@@ -21,6 +21,7 @@ var Reason;
     Reason["Type"] = "type";
     Reason["OnValidate"] = "onValidate";
     Reason["Enum"] = "enum";
+    Reason["Range"] = "range";
 })(Reason = exports.Reason || (exports.Reason = {}));
 const throwAnException = (scheme, initialMessage, key, value, reason) => {
     if (scheme.exception) {
@@ -72,7 +73,7 @@ const validatePrimitive = (scheme, value, key) => {
             maxLength = scheme.maxLength;
         }
         if (value.length < minLength || value.length > maxLength) {
-            throwAnException(scheme, `"${key}" length is not in range; expected within range: [min: ${minLength}, max: ${maxLength}]; received: ${value.length};`, key, value, Reason.Type);
+            throwAnException(scheme, `"${key}" length is not in range; expected within range: [min: ${minLength}, max: ${maxLength}]; received: ${value.length};`, key, value, Reason.Range);
         }
     }
     if (scheme === null || scheme === void 0 ? void 0 : scheme.enum) {
