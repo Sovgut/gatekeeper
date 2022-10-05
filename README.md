@@ -153,11 +153,11 @@ interface Field {
     constructor: any;
 
     /**
-     * Is should current exceptions options is passed to all children's in scheme.
+     * Is should current exceptions options is passed through to all children's in scheme.
      * 
      * Default: `false`.
      */
-    passToChildrens?: boolean;
+    passThrough?: boolean;
 
     /**
      * Pass arguments to a custom exception after message.

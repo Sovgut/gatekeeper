@@ -78,11 +78,11 @@ interface Field {
     constructor: any;
 
     /**
-     * Is should current exceptions options is passed to all children's in scheme.
+     * Is should current exceptions options is passed through to all children's in scheme.
      * 
      * Default: `false`.
      */
-    passToChildrens?: boolean;
+    passThrough?: boolean;
 
     /**
      * Pass arguments to a custom exception after message.
@@ -213,7 +213,7 @@ export const validate = (target: any, scheme: Scheme) => {
 
       for (const item of targetValue) {
         // INHERIT EXCEPTION OPTIONS FROM PARENT, IF EXCEPTION OPTIONS IS NOT DEFINED
-        if (schemeValue.exception?.passToChildrens && !schemeValue?.items?.exception) {
+        if (schemeValue.exception?.passThrough && !schemeValue?.items?.exception) {
           schemeValue.items!.exception = schemeValue.exception;
         }
 
@@ -231,7 +231,7 @@ export const validate = (target: any, scheme: Scheme) => {
       }
 
       // INHERIT EXCEPTION OPTIONS FROM PARENT, IF EXCEPTION OPTIONS IS NOT DEFINED
-      if (schemeValue.exception?.passToChildrens) {
+      if (schemeValue.exception?.passThrough) {
         for (const childKey of Object.keys(schemeValue.properties as Scheme)) {
           if (!(schemeValue.properties as Scheme)[childKey].exception) {
             (schemeValue.properties as Scheme)[childKey].exception = schemeValue.exception;
