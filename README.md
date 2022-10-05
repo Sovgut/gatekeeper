@@ -98,7 +98,7 @@ enum Format {
 enum Reason {
   Required = 'required',
   Type = 'type',
-  OnValidate = 'onValidate',
+  OnValidate = 'on-validate',
   Enum = 'enum',
   Range = 'range',
 }
