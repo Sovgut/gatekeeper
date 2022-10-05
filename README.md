@@ -147,9 +147,17 @@ interface Field {
   exception?: {
     /**
      * Here you can change the default exception class used for throwing errors.
-     * default: `Error`
+     * 
+     * Default: `Error`.
      */
     constructor: any;
+
+    /**
+     * Is should current exceptions options is passed to all children's in scheme.
+     * 
+     * Default: `false`.
+     */
+    passToChildrens?: boolean;
 
     /**
      * Pass arguments to a custom exception after message.

@@ -82,6 +82,7 @@ const validatePrimitive = (scheme, value, key) => {
     }
 };
 const validate = (target, scheme) => {
+    var _a, _b, _c;
     for (const key in scheme) {
         const schemeValue = scheme[key];
         const targetValue = target[key];
@@ -100,6 +101,10 @@ const validate = (target, scheme) => {
                 throwAnException(schemeValue, `"${key}" isn't an array or array is empty; received: ${targetValue};`, key, targetValue, Reason.Required);
             }
             for (const item of targetValue) {
+                // INHERIT EXCEPTION OPTIONS FROM PARENT, IF EXCEPTION OPTIONS IS NOT DEFINED
+                if (((_a = schemeValue.exception) === null || _a === void 0 ? void 0 : _a.passToChildrens) && !((_b = schemeValue === null || schemeValue === void 0 ? void 0 : schemeValue.items) === null || _b === void 0 ? void 0 : _b.exception)) {
+                    schemeValue.items.exception = schemeValue.exception;
+                }
                 validatePrimitive(schemeValue.items, item, key);
                 if (schemeValue.items.onValidate && !schemeValue.items.onValidate(item)) {
                     throwAnException(schemeValue, `"${key}" had invalid value; received: ${item};`, key, targetValue, Reason.OnValidate);
@@ -109,6 +114,14 @@ const validate = (target, scheme) => {
         if (schemeValue.type === Type.Object) {
             if (typeof targetValue !== 'object' || Array.isArray(targetValue)) {
                 throwAnException(schemeValue, `"${key}" isn't an object; received: ${targetValue};`, key, targetValue, Reason.Type);
+            }
+            // INHERIT EXCEPTION OPTIONS FROM PARENT, IF EXCEPTION OPTIONS IS NOT DEFINED
+            if ((_c = schemeValue.exception) === null || _c === void 0 ? void 0 : _c.passToChildrens) {
+                for (const childKey of Object.keys(schemeValue.properties)) {
+                    if (!schemeValue.properties[childKey].exception) {
+                        schemeValue.properties[childKey].exception = schemeValue.exception;
+                    }
+                }
             }
             (0, exports.validate)(targetValue, schemeValue.properties);
         }

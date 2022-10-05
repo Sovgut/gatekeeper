@@ -72,9 +72,17 @@ interface Field {
   exception?: {
     /**
      * Here you can change the default exception class used for throwing errors.
-     * default: `Error`
+     * 
+     * Default: `Error`.
      */
     constructor: any;
+
+    /**
+     * Is should current exceptions options is passed to all children's in scheme.
+     * 
+     * Default: `false`.
+     */
+    passToChildrens?: boolean;
 
     /**
      * Pass arguments to a custom exception after message.
@@ -204,6 +212,11 @@ export const validate = (target: any, scheme: Scheme) => {
       }
 
       for (const item of targetValue) {
+        // INHERIT EXCEPTION OPTIONS FROM PARENT, IF EXCEPTION OPTIONS IS NOT DEFINED
+        if (schemeValue.exception?.passToChildrens && !schemeValue?.items?.exception) {
+          schemeValue.items!.exception = schemeValue.exception;
+        }
+
         validatePrimitive(schemeValue.items!, item, key);
         
         if (schemeValue.items!.onValidate && !schemeValue.items!.onValidate(item)) {
@@ -215,6 +228,15 @@ export const validate = (target: any, scheme: Scheme) => {
     if (schemeValue.type === Type.Object) {
       if (typeof targetValue !== 'object' || Array.isArray(targetValue)) {
         throwAnException(schemeValue, `"${key}" isn't an object; received: ${targetValue};`, key, targetValue, Reason.Type);
+      }
+
+      // INHERIT EXCEPTION OPTIONS FROM PARENT, IF EXCEPTION OPTIONS IS NOT DEFINED
+      if (schemeValue.exception?.passToChildrens) {
+        for (const childKey of Object.keys(schemeValue.properties as Scheme)) {
+          if (!(schemeValue.properties as Scheme)[childKey].exception) {
+            (schemeValue.properties as Scheme)[childKey].exception = schemeValue.exception;
+          }
+        }
       }
 
       validate(targetValue, schemeValue.properties as Scheme);
