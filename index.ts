@@ -45,10 +45,8 @@ interface Field {
 
   /**
    * Validate value with enum array (the same as `onValidate: (value) => [...].includes(value)`).
-   * 
-   * Used only when type `Type.String` is provided.
    */
-  enum?: string[],
+  enum?: (string | number | boolean)[],
 
   /**
    * Overflow default class exception.
@@ -142,11 +140,11 @@ const validatePrimitive = (scheme: Field, value: any, key: string) => {
         throwAnException(scheme, `"${key}" isn't an date; received: ${value};`, key, value, Reason.Type);
       }
     }
+  }
 
-    if (scheme?.enum) {
-      if (!scheme.enum.includes(value)) {
-        throwAnException(scheme, `"${key}" is not listed in enum; received: ${value};`, key, value, Reason.Enum)
-      }
+  if (scheme?.enum) {
+    if (!scheme.enum.includes(value)) {
+      throwAnException(scheme, `"${key}" is not listed in enum; received: ${value};`, key, value, Reason.Enum)
     }
   }
 }

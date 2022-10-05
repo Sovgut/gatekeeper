@@ -120,10 +120,8 @@ interface Field {
 
   /**
    * Validate value with enum array (the same as `onValidate: (value) => [...].includes(value)`).
-   * 
-   * Used only when type `Type.String` is provided.
    */
-  enum?: string[],
+  enum?: (string | number | boolean)[],
 
   /**
    * Overflow default class exception.

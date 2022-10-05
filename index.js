@@ -20,6 +20,7 @@ var Reason;
     Reason["Required"] = "required";
     Reason["Type"] = "type";
     Reason["OnValidate"] = "onValidate";
+    Reason["Enum"] = "enum";
 })(Reason = exports.Reason || (exports.Reason = {}));
 const throwAnException = (scheme, initialMessage, key, value, reason) => {
     if (scheme.exception) {
@@ -61,6 +62,11 @@ const validatePrimitive = (scheme, value, key) => {
             if (isNaN(parsedValue)) {
                 throwAnException(scheme, `"${key}" isn't an date; received: ${value};`, key, value, Reason.Type);
             }
+        }
+    }
+    if (scheme === null || scheme === void 0 ? void 0 : scheme.enum) {
+        if (!scheme.enum.includes(value)) {
+            throwAnException(scheme, `"${key}" is not listed in enum; received: ${value};`, key, value, Reason.Enum);
         }
     }
 };
