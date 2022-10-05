@@ -91,28 +91,39 @@ enum Reason {
   Required = 'required',
   Type = 'type',
   OnValidate = 'onValidate',
+  Enum = 'enum',
 }
 
 interface Field {
   /**
    * Package can skip this field if value is undefined and `required` property is false.
    * In other way is exception is raised.
-   * default: `false`
+   * 
+   * Default: `false`
    */
   required?: boolean;
 
   /**
    * Package is validate value types with field type,
    * this property is represent which type is required for current field.
-   * default: `Type.String`
+   * 
+   * Default: `Type.String`
    */
   type: Type;
 
   /**
    * Package can validate value by provided type with format.
+   * 
    * As example type `Type.String` with format `Format.DateTime` is tested as date.
    */
   format?: Format
+
+  /**
+   * Validate value with enum array (the same as `onValidate: (value) => [...].includes(value)`).
+   * 
+   * Used only when type `Type.String` is provided.
+   */
+  enum?: string[],
 
   /**
    * Overflow default class exception.
@@ -126,6 +137,7 @@ interface Field {
 
     /**
      * Pass arguments to a custom exception after message.
+     * 
      * Used only when `exception` property is provided.
      */
     parameters?: (string | number | boolean)[];
@@ -152,7 +164,7 @@ interface Field {
   items?: Field;
 }
 
-export interface Scheme {
+interface Scheme {
   [property: string]: Field;
 }
 ```
