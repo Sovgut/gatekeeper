@@ -102,7 +102,7 @@ const validate = (target, scheme) => {
             }
             for (const item of targetValue) {
                 // INHERIT EXCEPTION OPTIONS FROM PARENT, IF EXCEPTION OPTIONS IS NOT DEFINED
-                if (((_a = schemeValue.exception) === null || _a === void 0 ? void 0 : _a.passToChildrens) && !((_b = schemeValue === null || schemeValue === void 0 ? void 0 : schemeValue.items) === null || _b === void 0 ? void 0 : _b.exception)) {
+                if (((_a = schemeValue.exception) === null || _a === void 0 ? void 0 : _a.passThrough) && !((_b = schemeValue === null || schemeValue === void 0 ? void 0 : schemeValue.items) === null || _b === void 0 ? void 0 : _b.exception)) {
                     schemeValue.items.exception = schemeValue.exception;
                 }
                 validatePrimitive(schemeValue.items, item, key);
@@ -116,7 +116,7 @@ const validate = (target, scheme) => {
                 throwAnException(schemeValue, `"${key}" isn't an object; received: ${targetValue};`, key, targetValue, Reason.Type);
             }
             // INHERIT EXCEPTION OPTIONS FROM PARENT, IF EXCEPTION OPTIONS IS NOT DEFINED
-            if ((_c = schemeValue.exception) === null || _c === void 0 ? void 0 : _c.passToChildrens) {
+            if ((_c = schemeValue.exception) === null || _c === void 0 ? void 0 : _c.passThrough) {
                 for (const childKey of Object.keys(schemeValue.properties)) {
                     if (!schemeValue.properties[childKey].exception) {
                         schemeValue.properties[childKey].exception = schemeValue.exception;
