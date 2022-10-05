@@ -46,7 +46,25 @@ interface Field {
   /**
    * Validate value with enum array (the same as `onValidate: (value) => [...].includes(value)`).
    */
-  enum?: (string | number | boolean)[],
+  enum?: (string | number | boolean)[];
+
+  /**
+   * The min length of the string value.
+   * 
+   * Used only when type `Type.String` is provided.
+   * 
+   * Default: `0`.
+   */
+  minLength?: number;
+
+  /**
+   * The max length of the string value.
+   * 
+   * Used only when type `Type.String` is provided.
+   * 
+   * Default: `Number.MAX_SAFE_INTEGER`.
+   */
+  maxLength?: number;
 
   /**
    * Overflow default class exception.
@@ -140,11 +158,25 @@ const validatePrimitive = (scheme: Field, value: any, key: string) => {
         throwAnException(scheme, `"${key}" isn't an date; received: ${value};`, key, value, Reason.Type);
       }
     }
+
+    let minLength = 0;
+    let maxLength = Number.MAX_SAFE_INTEGER;
+    if (typeof scheme.minLength === 'number') {
+      minLength = scheme.minLength
+    }
+
+    if (typeof scheme.maxLength === 'number') {
+      maxLength = scheme.maxLength
+    }
+
+    if (value.length < minLength || value.length > maxLength) {
+      throwAnException(scheme, `"${key}" length is not in range; expected within range: [min: ${minLength}, max: ${maxLength}]; received: ${value.length};`, key, value, Reason.Type);
+    }
   }
 
   if (scheme?.enum) {
     if (!scheme.enum.includes(value)) {
-      throwAnException(scheme, `"${key}" is not listed in enum; received: ${value};`, key, value, Reason.Enum)
+      throwAnException(scheme, `"${key}" is not listed in enum; expected one of: ${scheme.enum.toLocaleString()}; received: ${value};`, key, value, Reason.Enum)
     }
   }
 }

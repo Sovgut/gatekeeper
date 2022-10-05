@@ -121,7 +121,25 @@ interface Field {
   /**
    * Validate value with enum array (the same as `onValidate: (value) => [...].includes(value)`).
    */
-  enum?: (string | number | boolean)[],
+  enum?: (string | number | boolean)[];
+
+  /**
+   * The min length of the string value.
+   * 
+   * Used only when type `Type.String` is provided.
+   * 
+   * Default: `0`.
+   */
+  minLength?: number;
+
+  /**
+   * The max length of the string value.
+   * 
+   * Used only when type `Type.String` is provided.
+   * 
+   * Default: `Number.MAX_SAFE_INTEGER`.
+   */
+  maxLength?: number;
 
   /**
    * Overflow default class exception.
