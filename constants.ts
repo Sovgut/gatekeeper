@@ -18,7 +18,7 @@ export const Regex = {
 
 export const Message = {
   NotUUID: (_: Field, key: string, value: any) =>
-    `(${key}): Invalid UUID string format value: ${value}`,
+    `(${key}): Invalid UUID string format value: '${value}'`,
   NotArray: (scheme: Field, key: string, value: any) =>
     `(${key}): Invalid array value: '${print(value)}'. Allowed values: [${
       scheme.items?.type

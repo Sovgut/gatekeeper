@@ -18,7 +18,7 @@ exports.Regex = {
     IsUUI: /^(?:(?:[a-fA-F0-9]){8,8}-(?:[a-fA-F0-9]){4,4}-(?:[a-fA-F0-9]){4,4}-(?:[a-fA-F0-9]){4,4}-(?:[a-fA-F0-9]){12,12})$/,
 };
 exports.Message = {
-    NotUUID: (_, key, value) => `(${key}): Invalid UUID string format value: ${value}`,
+    NotUUID: (_, key, value) => `(${key}): Invalid UUID string format value: '${value}'`,
     NotArray: (scheme, key, value) => {
         var _a, _b, _c;
         return `(${key}): Invalid array value: '${print(value)}'. Allowed values: [${(_a = scheme.items) === null || _a === void 0 ? void 0 : _a.type},${(_b = scheme.items) === null || _b === void 0 ? void 0 : _b.type},${(_c = scheme.items) === null || _c === void 0 ? void 0 : _c.type}...].`;
