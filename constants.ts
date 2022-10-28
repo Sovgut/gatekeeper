@@ -1,14 +1,24 @@
-import { Field } from './types';
+import { Field, Type } from './types';
 
 const print = (value: any) => {
   if (typeof value === 'string') return value;
   if (value === null) return 'null';
   if (typeof value === 'undefined') return 'undefined';
-  if (typeof value === 'object' && Array.isArray(value))
-    return `[${value.join(',')}]`;
+  if (typeof value === 'object' && Array.isArray(value)) return value;
   if (typeof value === 'object') return JSON.stringify(value);
+  if (typeof value === 'number') return value;
 
   return value.toString();
+};
+
+const printLength = (value: any) => {
+  const output = print(value);
+
+  if (typeof output === 'number') {
+    return output;
+  }
+
+  return output.length;
 };
 
 export const Regex = {
@@ -40,9 +50,11 @@ export const Message = {
   NotString: (_: Field, key: string, value: any) =>
     `(${key}): Invalid string value: '${print(value)}'.`,
   NotInRange: (scheme: Field, key: string, value: any) =>
-    `(${key}): Invalid string length: '${
-      print(value).length
-    }'. Allowed range: ${scheme.minLength}-${scheme.maxLength}`,
+    `(${key}): Invalid ${
+      scheme.type === Type.Number ? scheme.type : `${scheme.type} length`
+    } not in range: '${printLength(value)}'. Allowed range: ${
+      scheme.minLength
+    }-${scheme.maxLength}`,
   NotInEnum: (scheme: Field, key: string, value: any) =>
     `(${key}): Invalid enum value: '${print(
       value,

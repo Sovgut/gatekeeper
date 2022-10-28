@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Message = exports.Regex = void 0;
+const types_1 = require("./types");
 const print = (value) => {
     if (typeof value === 'string')
         return value;
@@ -9,10 +10,19 @@ const print = (value) => {
     if (typeof value === 'undefined')
         return 'undefined';
     if (typeof value === 'object' && Array.isArray(value))
-        return `[${value.join(',')}]`;
+        return value;
     if (typeof value === 'object')
         return JSON.stringify(value);
+    if (typeof value === 'number')
+        return value;
     return value.toString();
+};
+const printLength = (value) => {
+    const output = print(value);
+    if (typeof output === 'number') {
+        return output;
+    }
+    return output.length;
 };
 exports.Regex = {
     IsUUI: /^(?:(?:[a-fA-F0-9]){8,8}-(?:[a-fA-F0-9]){4,4}-(?:[a-fA-F0-9]){4,4}-(?:[a-fA-F0-9]){4,4}-(?:[a-fA-F0-9]){12,12})$/,
@@ -31,7 +41,7 @@ exports.Message = {
     NotTimestamp: (_, key, value) => `(${key}): Invalid date-time value: '${print(value)}'.`,
     NotObject: (_, key, value) => `(${key}): Invalid object value: '${print(value)}'.`,
     NotString: (_, key, value) => `(${key}): Invalid string value: '${print(value)}'.`,
-    NotInRange: (scheme, key, value) => `(${key}): Invalid string length: '${print(value).length}'. Allowed range: ${scheme.minLength}-${scheme.maxLength}`,
+    NotInRange: (scheme, key, value) => `(${key}): Invalid ${scheme.type === types_1.Type.Number ? scheme.type : `${scheme.type} length`} not in range: '${printLength(value)}'. Allowed range: ${scheme.minLength}-${scheme.maxLength}`,
     NotInEnum: (scheme, key, value) => {
         var _a;
         return `(${key}): Invalid enum value: '${print(value)}'. Allowed values: [${(_a = scheme.enum) === null || _a === void 0 ? void 0 : _a.toLocaleString()}].`;

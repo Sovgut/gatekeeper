@@ -17,6 +17,20 @@ const processArray = (
     exceptionInstance.throw(Message.NotArray, Reason.Required);
   }
 
+  let minLength = 0;
+  let maxLength = Number.MAX_SAFE_INTEGER;
+  if (typeof field.minLength === 'number') {
+    minLength = field.minLength;
+  }
+
+  if (typeof field.maxLength === 'number') {
+    maxLength = field.maxLength;
+  }
+
+  if (value.length < minLength || value.length > maxLength) {
+    exceptionInstance.throw(Message.NotInRange, Reason.Range);
+  }
+
   // INHERIT EXCEPTION OPTIONS FROM PARENT, IF EXCEPTION OPTIONS IS NOT DEFINED
   if (field.exception?.passThrough && !field.items.exception) {
     field.items.exception = field.exception;

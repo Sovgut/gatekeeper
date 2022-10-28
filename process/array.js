@@ -16,6 +16,17 @@ const processArray = (key, value, field, exceptionInstance) => {
             return;
         exceptionInstance.throw(constants_1.Message.NotArray, types_1.Reason.Required);
     }
+    let minLength = 0;
+    let maxLength = Number.MAX_SAFE_INTEGER;
+    if (typeof field.minLength === 'number') {
+        minLength = field.minLength;
+    }
+    if (typeof field.maxLength === 'number') {
+        maxLength = field.maxLength;
+    }
+    if (value.length < minLength || value.length > maxLength) {
+        exceptionInstance.throw(constants_1.Message.NotInRange, types_1.Reason.Range);
+    }
     // INHERIT EXCEPTION OPTIONS FROM PARENT, IF EXCEPTION OPTIONS IS NOT DEFINED
     if (((_a = field.exception) === null || _a === void 0 ? void 0 : _a.passThrough) && !field.items.exception) {
         field.items.exception = field.exception;

@@ -24,6 +24,20 @@ const processNumber = (
   if (isNaN(parsedValue)) {
     exceptionInstance.throw(Message.NotNumber, Reason.Type);
   }
+
+  let minLength = 0;
+  let maxLength = Number.MAX_SAFE_INTEGER;
+  if (typeof field.minLength === 'number') {
+    minLength = field.minLength;
+  }
+
+  if (typeof field.maxLength === 'number') {
+    maxLength = field.maxLength;
+  }
+
+  if (value < minLength || value > maxLength) {
+    exceptionInstance.throw(Message.NotInRange, Reason.Range);
+  }
 };
 
 export default processNumber;

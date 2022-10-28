@@ -137,8 +137,6 @@ interface Field {
   /**
    * Package is validate value types with field type,
    * this property is represent which type is required for current field.
-   *
-   * Default: `Type.String`
    */
   type: Type;
 
@@ -157,7 +155,7 @@ interface Field {
   /**
    * The min length of the string value.
    *
-   * Used only when type `Type.String` is provided.
+   * Used only when type `Type.String`, `Type.Array` or `Type.Number` is provided.
    *
    * Default: `0`.
    */
@@ -166,7 +164,7 @@ interface Field {
   /**
    * The max length of the string value.
    *
-   * Used only when type `Type.String` is provided.
+   * Used only when type `Type.String`, `Type.Array` or `Type.Number` is provided.
    *
    * Default: `Number.MAX_SAFE_INTEGER`.
    */
@@ -191,14 +189,14 @@ interface Field {
     passThrough?: boolean;
 
     /**
-     * Pass arguments to a custom exception after message.
+     * Pass arguments to a exception after message.
      *
      * Used only when `exception.class` property is provided.
      */
     parameters?: (string | number | boolean)[];
 
     /**
-     * Override validation message which is passed to first argument in exception class.
+     * Overflow validation message which is passed to first argument in exception class.
      */
     message?: (
       initial: string,
