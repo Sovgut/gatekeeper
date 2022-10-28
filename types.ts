@@ -26,6 +26,11 @@ export enum Format {
    * This format is used only when `Type.String` type is provided
    */
   UUID = 'uuid',
+
+  /**
+   * This format is used only when `Type.String` type is provided
+   */
+  Email = 'email',
 }
 
 export enum Reason {

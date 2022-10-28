@@ -27,6 +27,10 @@ var Format;
      * This format is used only when `Type.String` type is provided
      */
     Format["UUID"] = "uuid";
+    /**
+     * This format is used only when `Type.String` type is provided
+     */
+    Format["Email"] = "email";
 })(Format = exports.Format || (exports.Format = {}));
 var Reason;
 (function (Reason) {

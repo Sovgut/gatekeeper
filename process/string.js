@@ -17,6 +17,11 @@ const processString = (value, field, exceptionInstance) => {
             exceptionInstance.throw(constants_1.Message.NotUUID, types_1.Reason.Format);
         }
     }
+    if ((field === null || field === void 0 ? void 0 : field.format) === types_1.Format.Email) {
+        if (!constants_1.Regex.IsEmail.test(value)) {
+            exceptionInstance.throw(constants_1.Message.NotEmail, types_1.Reason.Format);
+        }
+    }
     let minLength = 0;
     let maxLength = Number.MAX_SAFE_INTEGER;
     if (typeof field.minLength === 'number') {

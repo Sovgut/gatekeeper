@@ -25,6 +25,12 @@ const processString = (
     }
   }
 
+  if (field?.format === Format.Email) {
+    if (!Regex.IsEmail.test(value)) {
+      exceptionInstance.throw(Message.NotEmail, Reason.Format);
+    }
+  }
+
   let minLength = 0;
   let maxLength = Number.MAX_SAFE_INTEGER;
   if (typeof field.minLength === 'number') {
