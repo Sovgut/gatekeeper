@@ -1,4 +1,4 @@
-import { Message } from '../constants';
+import { Message, Regex } from '../constants';
 import { Exception } from '../exception';
 import { Field, Format, Reason } from '../types';
 
@@ -15,7 +15,13 @@ const processString = (
     const parsedValue = Date.parse(value);
 
     if (isNaN(parsedValue)) {
-      exceptionInstance.throw(Message.NotTimestamp, Reason.Type);
+      exceptionInstance.throw(Message.NotTimestamp, Reason.Format);
+    }
+  }
+
+  if (field?.format === Format.UUID) {
+    if (!Regex.IsUUI.test(value)) {
+      exceptionInstance.throw(Message.NotUUID, Reason.Format);
     }
   }
 

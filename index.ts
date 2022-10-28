@@ -7,7 +7,7 @@ import { Field, Format, Reason, Scheme, Type } from './types';
 
 const validate = (target: any, scheme: Scheme) => {
   for (const key in scheme) {
-    const field = scheme[key];
+    const field = scheme[key] as Field;
     const value = target[key];
     const exceptionInstance = new Exception(field, key, value);
 

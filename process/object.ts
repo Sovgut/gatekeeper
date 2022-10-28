@@ -15,8 +15,10 @@ const processObject = (
   // INHERIT EXCEPTION OPTIONS FROM PARENT, IF EXCEPTION OPTIONS IS NOT DEFINED
   if (field.exception?.passThrough) {
     for (const childKey of Object.keys(field.properties as Scheme)) {
-      if (!(field.properties as Scheme)[childKey].exception) {
-        (field.properties as Scheme)[childKey].exception = field.exception;
+      const childField: Field = (field.properties as Scheme)[childKey] as Field;
+
+      if (!childField.exception) {
+        childField.exception = field.exception;
       }
     }
   }

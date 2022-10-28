@@ -9,7 +9,12 @@ const processString = (value, field, exceptionInstance) => {
     if ((field === null || field === void 0 ? void 0 : field.format) === types_1.Format.DateTime) {
         const parsedValue = Date.parse(value);
         if (isNaN(parsedValue)) {
-            exceptionInstance.throw(constants_1.Message.NotTimestamp, types_1.Reason.Type);
+            exceptionInstance.throw(constants_1.Message.NotTimestamp, types_1.Reason.Format);
+        }
+    }
+    if ((field === null || field === void 0 ? void 0 : field.format) === types_1.Format.UUID) {
+        if (!constants_1.Regex.IsUUI.test(value)) {
+            exceptionInstance.throw(constants_1.Message.NotUUID, types_1.Reason.Format);
         }
     }
     let minLength = 0;

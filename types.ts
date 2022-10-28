@@ -7,9 +7,25 @@ export enum Type {
 }
 
 export enum Format {
+  /**
+   * This format is used only when `Type.Number` type is provided
+   */
   Float = 'float',
+
+  /**
+   * This format is used only when `Type.Number` type is provided
+   */
   Integer = 'integer',
+
+  /**
+   * This format is used only when `Type.String` type is provided
+   */
   DateTime = 'date-time',
+
+  /**
+   * This format is used only when `Type.String` type is provided
+   */
+  UUID = 'uuid',
 }
 
 export enum Reason {
@@ -18,6 +34,7 @@ export enum Reason {
   OnValidate = 'on-validate',
   Enum = 'enum',
   Range = 'range',
+  Format = 'format',
 }
 
 export interface Field {

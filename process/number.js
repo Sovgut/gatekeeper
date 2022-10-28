@@ -10,7 +10,7 @@ const processNumber = (value, field, exceptionInstance) => {
     else if ((field === null || field === void 0 ? void 0 : field.format) === types_1.Format.Integer) {
         parsedValue = parseFloat(value);
         if (parsedValue.toString().includes('.')) {
-            exceptionInstance.throw(constants_1.Message.NotInteger, types_1.Reason.Type);
+            exceptionInstance.throw(constants_1.Message.NotInteger, types_1.Reason.Format);
         }
     }
     else {

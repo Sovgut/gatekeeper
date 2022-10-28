@@ -11,22 +11,29 @@ const print = (value: any) => {
   return value.toString();
 };
 
+export const Regex = {
+  IsUUI:
+    /^(?:(?:[a-fA-F0-9]){8,8}-(?:[a-fA-F0-9]){4,4}-(?:[a-fA-F0-9]){4,4}-(?:[a-fA-F0-9]){4,4}-(?:[a-fA-F0-9]){12,12})$/,
+};
+
 export const Message = {
+  NotUUID: (_: Field, key: string, value: any) =>
+    `(${key}): Invalid UUID string format value: ${value}`,
   NotArray: (scheme: Field, key: string, value: any) =>
     `(${key}): Invalid array value: '${print(value)}'. Allowed values: [${
       scheme.items?.type
     },${scheme.items?.type},${scheme.items?.type}...].`,
-  NotInteger: (scheme: Field, key: string, value: any) =>
+  NotInteger: (_: Field, key: string, value: any) =>
     `(${key}): Invalid integer value: '${print(value)}'.`,
-  NotNumber: (scheme: Field, key: string, value: any) =>
+  NotNumber: (_: Field, key: string, value: any) =>
     `(${key}): Invalid number value: '${print(value)}'.`,
-  NotBoolean: (scheme: Field, key: string, value: any) =>
+  NotBoolean: (_: Field, key: string, value: any) =>
     `(${key}): Invalid boolean value: '${print(value)}'.`,
-  NotTimestamp: (scheme: Field, key: string, value: any) =>
+  NotTimestamp: (_: Field, key: string, value: any) =>
     `(${key}): Invalid date-time value: '${print(value)}'.`,
-  NotObject: (scheme: Field, key: string, value: any) =>
+  NotObject: (_: Field, key: string, value: any) =>
     `(${key}): Invalid object value: '${print(value)}'.`,
-  NotString: (scheme: Field, key: string, value: any) =>
+  NotString: (_: Field, key: string, value: any) =>
     `(${key}): Invalid string value: '${print(value)}'.`,
   NotInRange: (scheme: Field, key: string, value: any) =>
     `(${key}): Invalid string length: '${
@@ -36,8 +43,8 @@ export const Message = {
     `(${key}): Invalid enum value: '${print(
       value,
     )}'. Allowed values: [${scheme.enum?.toLocaleString()}].`,
-  Required: (scheme: Field, key: string, value: any) =>
+  Required: (_: Field, key: string, value: any) =>
     `(${key}): Is required. Received: '${print(value)}'.`,
-  Invalid: (scheme: Field, key: string, value: any) =>
+  Invalid: (_: Field, key: string, value: any) =>
     `(${key}): Failed additional validation. Received: '${print(value)}'.`,
 };

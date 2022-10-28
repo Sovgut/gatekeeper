@@ -15,7 +15,7 @@ const processNumber = (
     parsedValue = parseFloat(value);
 
     if (parsedValue.toString().includes('.')) {
-      exceptionInstance.throw(Message.NotInteger, Reason.Type);
+      exceptionInstance.throw(Message.NotInteger, Reason.Format);
     }
   } else {
     parsedValue = parseFloat(value);
