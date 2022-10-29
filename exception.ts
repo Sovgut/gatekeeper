@@ -1,7 +1,11 @@
-import { Field, Reason } from './types';
+import { Field, Reason, Target } from './types';
 
 export class Exception {
-  constructor(private scheme: Field, private key: string, private value: any) {}
+  constructor(
+    private scheme: Field,
+    private key: string,
+    private value: Target,
+  ) {}
 
   throw(
     defaultMessage: (scheme: Field, key: string, value: any) => string,

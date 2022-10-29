@@ -1,4 +1,4 @@
-import { validate } from '../';
+import Gatekeeper from '../';
 import { Message } from '../constants';
 import { Exception } from '../exception';
 import { Field, Reason, Scheme } from '../types';
@@ -23,7 +23,7 @@ const processObject = (
     }
   }
 
-  validate(value, field.properties as Scheme);
+  Gatekeeper.validate(value, field.properties as Scheme);
 };
 
 export default processObject;

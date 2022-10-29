@@ -5,7 +5,7 @@ This package is builded for validate data for any objects using schemes like in 
 ## Example usage
 
 ```typescript
-import { validate, Scheme, Type, Format } from '@sovgut/gatekeeper';
+import Gatekeeper, { Scheme, Type, Format } from '@sovgut/gatekeeper';
 
 // MODULES FROM API, THIS IS NOT RELATED TO PACKAGE
 import { Router } from 'express';
@@ -66,7 +66,10 @@ const scheme: Scheme = {
 export default (router: Router) => {
   router.get('/users', (request, response) => {
     try {
-      validate(request, scheme);
+      new Gatekeeper(scheme).validate(request);
+      // OR Gatekeeper.validate(request, scheme);
+
+      return response.status(HttpStatus.Ok).end();
     } catch (exception) {
       if (exception instanceof ServerException) {
         return response.status(exception.status).send(exception.message);
@@ -81,50 +84,6 @@ export default (router: Router) => {
 ## API
 
 ```typescript
-enum Type {
-  Object = 'object',
-  Number = 'number',
-  Boolean = 'boolean',
-  String = 'string',
-  Array = 'array',
-}
-
-enum Format {
-  /**
-   * This format is used only when `Type.Number` type is provided
-   */
-  Float = 'float',
-
-  /**
-   * This format is used only when `Type.Number` type is provided
-   */
-  Integer = 'integer',
-
-  /**
-   * This format is used only when `Type.String` type is provided
-   */
-  DateTime = 'date-time',
-
-  /**
-   * This format is used only when `Type.String` type is provided
-   */
-  UUID = 'uuid',
-
-  /**
-   * This format is used only when `Type.String` type is provided
-   */
-  Email = 'email',
-}
-
-enum Reason {
-  Required = 'required',
-  Type = 'type',
-  OnValidate = 'on-validate',
-  Enum = 'enum',
-  Range = 'range',
-  Format = 'format',
-}
-
 interface Field {
   /**
    * Package can skip this field if value is undefined and `required` property is false.
@@ -137,6 +96,8 @@ interface Field {
   /**
    * Package is validate value types with field type,
    * this property is represent which type is required for current field.
+   *
+   * Default: `Type.String`
    */
   type: Type;
 
@@ -224,5 +185,53 @@ interface Field {
 
 interface Scheme {
   [property: string]: Field;
+}
+
+interface Target {
+  [property: string]: any;
+}
+
+enum Type {
+  Object = 'object',
+  Number = 'number',
+  Boolean = 'boolean',
+  String = 'string',
+  Array = 'array',
+}
+
+enum Format {
+  /**
+   * This format is used only when `Type.Number` type is provided
+   */
+  Float = 'float',
+
+  /**
+   * This format is used only when `Type.Number` type is provided
+   */
+  Integer = 'integer',
+
+  /**
+   * This format is used only when `Type.String` type is provided
+   */
+  DateTime = 'date-time',
+
+  /**
+   * This format is used only when `Type.String` type is provided
+   */
+  UUID = 'uuid',
+
+  /**
+   * This format is used only when `Type.String` type is provided
+   */
+  Email = 'email',
+}
+
+enum Reason {
+  Required = 'required',
+  Type = 'type',
+  OnValidate = 'on-validate',
+  Enum = 'enum',
+  Range = 'range',
+  Format = 'format',
 }
 ```

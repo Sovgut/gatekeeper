@@ -1,47 +1,3 @@
-export enum Type {
-  Object = 'object',
-  Number = 'number',
-  Boolean = 'boolean',
-  String = 'string',
-  Array = 'array',
-}
-
-export enum Format {
-  /**
-   * This format is used only when `Type.Number` type is provided
-   */
-  Float = 'float',
-
-  /**
-   * This format is used only when `Type.Number` type is provided
-   */
-  Integer = 'integer',
-
-  /**
-   * This format is used only when `Type.String` type is provided
-   */
-  DateTime = 'date-time',
-
-  /**
-   * This format is used only when `Type.String` type is provided
-   */
-  UUID = 'uuid',
-
-  /**
-   * This format is used only when `Type.String` type is provided
-   */
-  Email = 'email',
-}
-
-export enum Reason {
-  Required = 'required',
-  Type = 'type',
-  OnValidate = 'on-validate',
-  Enum = 'enum',
-  Range = 'range',
-  Format = 'format',
-}
-
 export interface Field {
   /**
    * Package can skip this field if value is undefined and `required` property is false.
@@ -143,4 +99,52 @@ export interface Field {
 
 export interface Scheme {
   [property: string]: Field;
+}
+
+export interface Target {
+  [property: string]: any;
+}
+
+export enum Type {
+  Object = 'object',
+  Number = 'number',
+  Boolean = 'boolean',
+  String = 'string',
+  Array = 'array',
+}
+
+export enum Format {
+  /**
+   * This format is used only when `Type.Number` type is provided
+   */
+  Float = 'float',
+
+  /**
+   * This format is used only when `Type.Number` type is provided
+   */
+  Integer = 'integer',
+
+  /**
+   * This format is used only when `Type.String` type is provided
+   */
+  DateTime = 'date-time',
+
+  /**
+   * This format is used only when `Type.String` type is provided
+   */
+  UUID = 'uuid',
+
+  /**
+   * This format is used only when `Type.String` type is provided
+   */
+  Email = 'email',
+}
+
+export enum Reason {
+  Required = 'required',
+  Type = 'type',
+  OnValidate = 'on-validate',
+  Enum = 'enum',
+  Range = 'range',
+  Format = 'format',
 }
