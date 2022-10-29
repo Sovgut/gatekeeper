@@ -16,33 +16,45 @@ Object.defineProperty(exports, "Type", { enumerable: true, get: function () { re
 class Gatekeeper {
     constructor(scheme) {
         this.scheme = scheme;
+        this.scheme = this.setDefaults(this.scheme);
     }
-    validate(target) {
-        for (const key in this.scheme) {
-            const field = this.scheme[key];
-            const value = target[key];
-            const exceptionInstance = new exception_1.Exception(field, key, value);
-            if (typeof value === 'undefined') {
-                if (!field.required)
-                    continue;
-                exceptionInstance.throw(constants_1.Message.Required, types_1.Reason.Required);
-            }
-            if (field.type === types_1.Type.Array) {
-                (0, array_1.default)(key, value, field, exceptionInstance);
-            }
-            else if (field.type === types_1.Type.Object) {
-                (0, object_1.default)(value, field, exceptionInstance);
+    setDefaults(initialScheme) {
+        const scheme = initialScheme;
+        if (typeof scheme.minLength === 'undefined') {
+            if (scheme.type === types_1.Type.Number) {
+                scheme.minLength = Number.MIN_SAFE_INTEGER;
             }
             else {
-                (0, process_1.default)(key, value, field);
-            }
-            if (field.onValidate && !field.onValidate(value)) {
-                exceptionInstance.throw(constants_1.Message.Invalid, types_1.Reason.OnValidate);
+                scheme.minLength = 0;
             }
         }
+        if (typeof scheme.maxLength === 'undefined') {
+            scheme.maxLength = Number.MAX_SAFE_INTEGER;
+        }
+        return scheme;
     }
-    static validate(target, scheme) {
-        new Gatekeeper(scheme).validate(target);
+    validate(target, key = 'GatekeeperRootReference') {
+        const exceptionInstance = new exception_1.Exception(this.scheme, key, target);
+        if (typeof target === 'undefined') {
+            if (!this.scheme.required)
+                return;
+            exceptionInstance.throw(constants_1.Message.Required, types_1.Reason.Required);
+        }
+        if (this.scheme.type === types_1.Type.Array) {
+            (0, array_1.default)(key, target, this.scheme, exceptionInstance);
+        }
+        else if (this.scheme.type === types_1.Type.Object) {
+            (0, object_1.default)(target, this.scheme, exceptionInstance);
+        }
+        else {
+            (0, process_1.default)(key, target, this.scheme);
+        }
+        if (this.scheme.onValidate && !this.scheme.onValidate(target)) {
+            exceptionInstance.throw(constants_1.Message.Invalid, types_1.Reason.OnValidate);
+        }
+    }
+    static validate(target, scheme, key) {
+        new Gatekeeper(scheme).validate(target, key);
     }
 }
 exports.default = Gatekeeper;
