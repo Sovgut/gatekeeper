@@ -1,4 +1,4 @@
-import { Field, Type } from './types';
+import { Scheme, Type } from './types';
 
 const print = (value: any) => {
   if (typeof value === 'string') return value;
@@ -29,38 +29,38 @@ export const Regex = {
 };
 
 export const Message = {
-  NotUUID: (_: Field, key: string, value: any) =>
+  NotUUID: (_: Scheme, key: string, value: any) =>
     `(${key}): Invalid UUID string format value: '${value}'`,
-  NotEmail: (_: Field, key: string, value: any) =>
+  NotEmail: (_: Scheme, key: string, value: any) =>
     `(${key}): Invalid email string format value: '${value}'`,
-  NotArray: (scheme: Field, key: string, value: any) =>
+  NotArray: (scheme: Scheme, key: string, value: any) =>
     `(${key}): Invalid array value: '${print(value)}'. Allowed values: [${
       scheme.items?.type
     },${scheme.items?.type},${scheme.items?.type}...].`,
-  NotInteger: (_: Field, key: string, value: any) =>
+  NotInteger: (_: Scheme, key: string, value: any) =>
     `(${key}): Invalid integer value: '${print(value)}'.`,
-  NotNumber: (_: Field, key: string, value: any) =>
+  NotNumber: (_: Scheme, key: string, value: any) =>
     `(${key}): Invalid number value: '${print(value)}'.`,
-  NotBoolean: (_: Field, key: string, value: any) =>
+  NotBoolean: (_: Scheme, key: string, value: any) =>
     `(${key}): Invalid boolean value: '${print(value)}'.`,
-  NotTimestamp: (_: Field, key: string, value: any) =>
+  NotTimestamp: (_: Scheme, key: string, value: any) =>
     `(${key}): Invalid date-time value: '${print(value)}'.`,
-  NotObject: (_: Field, key: string, value: any) =>
+  NotObject: (_: Scheme, key: string, value: any) =>
     `(${key}): Invalid object value: '${print(value)}'.`,
-  NotString: (_: Field, key: string, value: any) =>
+  NotString: (_: Scheme, key: string, value: any) =>
     `(${key}): Invalid string value: '${print(value)}'.`,
-  NotInRange: (scheme: Field, key: string, value: any) =>
+  NotInRange: (scheme: Scheme, key: string, value: any) =>
     `(${key}): Invalid ${
       scheme.type === Type.Number ? scheme.type : `${scheme.type} length`
     } not in range: '${printLength(value)}'. Allowed range: ${
       scheme.minLength
     }-${scheme.maxLength}`,
-  NotInEnum: (scheme: Field, key: string, value: any) =>
+  NotInEnum: (scheme: Scheme, key: string, value: any) =>
     `(${key}): Invalid enum value: '${print(
       value,
     )}'. Allowed values: [${scheme.enum?.toLocaleString()}].`,
-  Required: (_: Field, key: string, value: any) =>
+  Required: (_: Scheme, key: string, value: any) =>
     `(${key}): Is required. Received: '${print(value)}'.`,
-  Invalid: (_: Field, key: string, value: any) =>
+  Invalid: (_: Scheme, key: string, value: any) =>
     `(${key}): Failed additional validation. Received: '${print(value)}'.`,
 };

@@ -1,11 +1,11 @@
 import { Exception } from '../exception';
-import { Field, Type } from '../types';
+import { Scheme, Type } from '../types';
 import processBoolean from './boolean';
 import processEnum from './enum';
 import processNumber from './number';
 import processString from './string';
 
-const processValidation = (key: string, value: any, field: Field) => {
+const processValidation = (key: string, value: any, field: Scheme) => {
   const exceptionInstance = new Exception(field, key, value);
 
   if (field.type === Type.Number) {

@@ -1,10 +1,10 @@
 import { Message, Regex } from '../constants';
 import { Exception } from '../exception';
-import { Field, Format, Reason } from '../types';
+import { Format, Reason, Scheme } from '../types';
 
 const processString = (
   value: any,
-  field: Field,
+  field: Scheme,
   exceptionInstance: Exception,
 ) => {
   if (typeof value !== 'string') {

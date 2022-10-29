@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const _1 = __importDefault(require("."));
 const constants_1 = require("../constants");
 const types_1 = require("../types");
+const inherit_exception_1 = __importDefault(require("../utils/inherit-exception"));
 const object_1 = __importDefault(require("./object"));
 const processArray = (key, value, field, exceptionInstance) => {
-    var _a;
     if (!field.items)
         return;
     if (!Array.isArray(value) || value.length === 0) {
@@ -28,9 +28,7 @@ const processArray = (key, value, field, exceptionInstance) => {
         exceptionInstance.throw(constants_1.Message.NotInRange, types_1.Reason.Range);
     }
     // INHERIT EXCEPTION OPTIONS FROM PARENT, IF EXCEPTION OPTIONS IS NOT DEFINED
-    if (((_a = field.exception) === null || _a === void 0 ? void 0 : _a.passThrough) && !field.items.exception) {
-        field.items.exception = field.exception;
-    }
+    field.items.exception = (0, inherit_exception_1.default)(field, field.items);
     for (const item of value) {
         if (field.items.type === types_1.Type.Array) {
             processArray(key, item, field.items, exceptionInstance);

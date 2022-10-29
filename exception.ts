@@ -1,19 +1,16 @@
-import { Field, Reason, Target } from './types';
+import { Reason, Scheme, Target } from './types';
 
 export class Exception {
   constructor(
-    private scheme: Field,
+    private scheme: Scheme,
     private key: string,
     private value: Target,
   ) {}
 
   throw(
-    defaultMessage: (scheme: Field, key: string, value: any) => string,
+    defaultMessage: (scheme: Scheme, key: string, value: any) => string,
     reason: Reason,
   ): void {
-    this.scheme.minLength = this.scheme.minLength || 0;
-    this.scheme.maxLength = this.scheme.maxLength || Number.MAX_SAFE_INTEGER;
-
     let message = defaultMessage(this.scheme, this.key, this.value);
     if (this.scheme.exception?.message) {
       message = this.scheme.exception.message(

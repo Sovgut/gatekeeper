@@ -1,10 +1,10 @@
 import { Message } from '../constants';
 import { Exception } from '../exception';
-import { Field, Format, Reason } from '../types';
+import { Format, Reason, Scheme } from '../types';
 
 const processNumber = (
   value: any,
-  field: Field,
+  field: Scheme,
   exceptionInstance: Exception,
 ) => {
   let parsedValue = NaN;

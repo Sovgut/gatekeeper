@@ -1,13 +1,14 @@
 import processValidation from '.';
 import { Message } from '../constants';
 import { Exception } from '../exception';
-import { Field, Reason, Type } from '../types';
+import { Reason, Scheme, Type } from '../types';
+import inheritException from '../utils/inherit-exception';
 import processObject from './object';
 
 const processArray = (
   key: string,
   value: any,
-  field: Field,
+  field: Scheme,
   exceptionInstance: Exception,
 ) => {
   if (!field.items) return;
@@ -32,9 +33,7 @@ const processArray = (
   }
 
   // INHERIT EXCEPTION OPTIONS FROM PARENT, IF EXCEPTION OPTIONS IS NOT DEFINED
-  if (field.exception?.passThrough && !field.items.exception) {
-    field.items.exception = field.exception;
-  }
+  field.items.exception = inheritException(field, field.items);
 
   for (const item of value) {
     if (field.items.type === Type.Array) {

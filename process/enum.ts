@@ -1,10 +1,10 @@
 import { Message } from '../constants';
 import { Exception } from '../exception';
-import { Field, Reason } from '../types';
+import { Reason, Scheme } from '../types';
 
 const processEnum = (
   value: any,
-  field: Field,
+  field: Scheme,
   exceptionInstance: Exception,
 ) => {
   if (!field.enum!.includes(value)) {
