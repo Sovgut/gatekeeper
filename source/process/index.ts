@@ -1,5 +1,5 @@
+import { Scheme, Type } from '..';
 import { Exception } from '../exception';
-import { Scheme, Type } from '../types';
 import processBoolean from './boolean';
 import processEnum from './enum';
 import processNumber from './number';

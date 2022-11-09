@@ -1,7 +1,7 @@
+import { Reason, Scheme } from '..';
 import Gatekeeper from '../';
 import { Message } from '../constants';
 import { Exception } from '../exception';
-import { Reason, Scheme } from '../types';
 import inheritException from '../utils/inherit-exception';
 
 const processObject = (

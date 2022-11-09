@@ -1,6 +1,6 @@
+import { Reason, Scheme } from '..';
 import { Message } from '../constants';
 import { Exception } from '../exception';
-import { Reason, Scheme } from '../types';
 
 const processEnum = (
   value: any,

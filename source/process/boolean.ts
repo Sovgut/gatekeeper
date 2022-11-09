@@ -1,6 +1,6 @@
+import { Reason } from '..';
 import { Message } from '../constants';
 import { Exception } from '../exception';
-import { Reason } from '../types';
 
 const processBoolean = (value: any, exceptionInstance: Exception) => {
   const parsedValue =

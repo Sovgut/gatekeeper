@@ -1,6 +1,6 @@
+import { Format, Reason, Scheme } from '..';
 import { Message } from '../constants';
 import { Exception } from '../exception';
-import { Format, Reason, Scheme } from '../types';
 
 const processNumber = (
   value: any,

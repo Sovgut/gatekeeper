@@ -1,7 +1,7 @@
 import processValidation from '.';
+import { Reason, Scheme, Type } from '..';
 import { Message } from '../constants';
 import { Exception } from '../exception';
-import { Reason, Scheme, Type } from '../types';
 import inheritException from '../utils/inherit-exception';
 import processObject from './object';
 
