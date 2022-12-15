@@ -29,9 +29,7 @@ const scheme = {
                 case Reason.OnValidate:
                   return `${key} have invalid value; expected: more than 10; received: ${value};`;
                 case Reason.Type:
-                  return `${key} have invalid type; expected: ${
-                    Type.Number
-                  }; received: ${typeof value};`;
+                  return `${key} have invalid type; expected: ${Type.Number}; received: ${typeof value};`;
                 case Reason.Required:
                   return `${key} is required; expected: 10; received: ${value};`;
                 default:
@@ -44,13 +42,21 @@ const scheme = {
         offset: {
           type: Type.Number,
         },
+        float: {
+          type: Type.Number,
+          format: Format.Float,
+        },
+        integer: {
+          type: Type.Number,
+          format: Format.Integer,
+        },
       },
     },
   },
 };
 
 try {
-  new Gatekeeper(scheme).validate({ query: { limit: 11 } });
+  new Gatekeeper(scheme).validate({ query: { limit: 11, float: 0.0001, integer: 123 } });
   console.log('PASS!');
 } catch (exception) {
   console.log('FAIL!', exception);
